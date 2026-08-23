@@ -10,7 +10,7 @@ CPU = cortex-m0
 
 SRCS   := $(wildcard src/*.c)
 CFLAGS  = -mcpu=$(CPU) -mthumb -Os -g -ffreestanding -Wall $(CFLAGS_EXTRA)
-LDFLAGS = -nostdlib -Wl,-T,linker.ld -Wl,--gc-sections -Wl,-Map=$(OUTDIR)/$(TARGET).map
+LDFLAGS = -nostdlib -Wl,-z,max-page-size=16 -Wl,-T,linker.ld -Wl,--gc-sections -Wl,-Map=$(OUTDIR)/$(TARGET).map
 
 all: $(OUTDIR)/$(TARGET).elf $(OUTDIR)/$(TARGET).bin $(OUTDIR)/$(TARGET).hex
 	$(SIZE) $(OUTDIR)/$(TARGET).elf
