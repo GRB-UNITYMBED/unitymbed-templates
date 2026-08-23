@@ -4,7 +4,8 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-5-Clause
  */
 
-/**@file nrf_modem_trace.h
+/**
+ * @file nrf_modem_trace.h
  *
  * @defgroup nrf_modem_trace Modem library trace interface
  * @{
@@ -45,6 +46,7 @@ struct nrf_modem_trace_data {
  * @retval -NRF_ENODATA No more trace data is available until the modem is restarted.
  * @retval -NRF_ESHUTDOWN Modem was shut down.
  * @retval -NRF_EAGAIN If the request timed out.
+ * @retval -NRF_ENOTSUP Traces are disabled because trace region size is zero.
  */
 int nrf_modem_trace_get(struct nrf_modem_trace_data **frags, size_t *n_frags, int timeout);
 
@@ -67,5 +69,4 @@ int nrf_modem_trace_processed(size_t len);
 #endif
 
 #endif /* NRF_MODEM_TRACE_H__ */
-
-/**@} */
+/** @} */

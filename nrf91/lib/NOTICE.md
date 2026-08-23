@@ -1,8 +1,8 @@
 # Third-party components (vendored)
 
-- `libmodem.a`, `include/` — Nordic Semiconductor nrfxlib v2.3.0 (nrf_modem),
-  Nordic 5-Clause License: redistributable for use with Nordic Semiconductor
-  devices. https://github.com/nrfconnect/sdk-nrfxlib
+- `nrf9160/libmodem.a`, `nrf9120/libmodem.a`, `include/` — Nordic Semiconductor
+  nrfxlib v2.5.3 (nrf_modem), Nordic 5-Clause License: redistributable for use
+  with Nordic Semiconductor devices. https://github.com/nrfconnect/sdk-nrfxlib
 - `mdk/` — Nordic Semiconductor MDK (nrfx), BSD-3-Clause.
   https://github.com/NordicSemiconductor/nrfx
 - `nrfx_ipc.o` — compiled from nrfx v3.5.0 `drivers/src/nrfx_ipc.c`

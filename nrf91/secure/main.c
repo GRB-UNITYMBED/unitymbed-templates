@@ -37,6 +37,38 @@ void Reset_Handler(void) {
   for (dst = &_sbss; dst < &_ebss;) *dst++ = 0;
   SystemInit();
 
+#ifdef NRF9120_XXAA
+  /* nRF9151/9161 ออกโรงงานแบบ APPROTECT enabled (UICR ว่าง = protected):
+   * debugger reset ครั้งไหนก็ตาม → protection กลับมา → J-Link connect รอบถัดไป
+   * ทำ recover-ERASEALL เงียบๆ ล้าง flash ทั้งชิป (รวม UICR ที่เพิ่งเขียนด้วย!)
+   * แก้จากฝั่ง CPU เท่านั้นที่ commit จริง (เขียนผ่าน J-Link โดน cache หลอก):
+   * เขียน HwUnprotected (0x50FA50FA) ครั้งแรกที่บูต — มีผลถาวรตั้งแต่ reset ถัดไป */
+  {
+    volatile uint32_t *uicr_approtect = (volatile uint32_t *)0x00FF8000u;
+    volatile uint32_t *uicr_secureapprotect = (volatile uint32_t *)0x00FF802Cu;
+    volatile uint32_t *nvmc_config = (volatile uint32_t *)0x50039504u;
+    volatile uint32_t *nvmc_ready = (volatile uint32_t *)0x50039400u;
+    if (*uicr_approtect != 0x50FA50FAu || *uicr_secureapprotect != 0x50FA50FAu) {
+      *nvmc_config = 1; /* WEN */
+      while (!*nvmc_ready) {}
+      if (*uicr_approtect != 0x50FA50FAu) *uicr_approtect = 0x50FA50FAu;
+      while (!*nvmc_ready) {}
+      if (*uicr_secureapprotect != 0x50FA50FAu) *uicr_secureapprotect = 0x50FA50FAu;
+      while (!*nvmc_ready) {}
+      *nvmc_config = 0;
+    }
+  }
+  /* หลักฐานว่า secure boot มีชีวิต (debug ผ่าน LED เพราะ debugger ต่อไม่ได้ตอน
+   * protected): จุด LED4 (P0.05) ค้างไว้ — NS app จะ OUTCLR ดับเองตอนเริ่ม
+   * เห็น "ติดแวบแล้วดับ" = ทั้ง secure และ NS รันครบ / "ติดค้าง" = NS jump พัง */
+  {
+    volatile uint32_t *gpio_s_dirset = (volatile uint32_t *)0x50842518u;
+    volatile uint32_t *gpio_s_outset = (volatile uint32_t *)0x50842508u;
+    *gpio_s_dirset = (1u << 5);
+    *gpio_s_outset = (1u << 5);
+  }
+#endif
+
   /* flash region 8..31 (0x40000 ขึ้นไป) → non-secure */
   for (uint32_t i = 8; i < 32; i++) SPU_FLASH(i) = 0x07;
   /* RAM region 8..31 (0x20010000 ขึ้นไป) → non-secure */

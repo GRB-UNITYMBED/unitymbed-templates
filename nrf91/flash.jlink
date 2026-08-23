@@ -1,4 +1,3 @@
-erase
 loadfile build/secure.hex
 loadfile build/firmware.hex
 r

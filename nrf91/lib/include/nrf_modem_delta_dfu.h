@@ -4,7 +4,9 @@
  * SPDX-License-Identifier: LicenseRef-Nordic-5-Clause
  */
 
-/**@file nrf_modem_delta_dfu.h
+/**
+ * @file nrf_modem_delta_dfu.h
+ *
  * @defgroup nrf_modem_delta_dfu Delta DFU API
  * @{
  * @brief API for Delta DFU.
@@ -18,7 +20,8 @@
 extern "C" {
 #endif
 
-/**@defgroup nrf_modem_delta_dfu_errors DFU errors
+/**
+ * @defgroup nrf_modem_delta_dfu_errors DFU errors
  * @brief    Delta DFU errors.
  * @{
  */
@@ -49,10 +52,10 @@ extern "C" {
 /** @} */
 
 
-/**@brief Modem UUID length. */
+/** @brief Modem UUID length. */
 #define NRF_MODEM_DELTA_DFU_UUID_LEN   36
 
-/**@brief Modem UUID. */
+/** @brief Modem UUID. */
 struct nrf_modem_delta_dfu_uuid {
 	uint8_t data[NRF_MODEM_DELTA_DFU_UUID_LEN];
 };
@@ -76,7 +79,7 @@ struct nrf_modem_delta_dfu_uuid {
  * @retval -NRF_ENOMEM Not enough shared memory for this request.
  * @retval -NRF_EFAULT If @c modem_uuid is NULL.
  * @retval -NRF_ESHUTDOWN Modem was shut down.
- * @returns A positive error code from @ref nrf_delta_dfu_errors,
+ * @returns A positive error code from @ref nrf_modem_delta_dfu_errors,
  *	    if the modem refused the operation.
  */
 int nrf_modem_delta_dfu_uuid(struct nrf_modem_delta_dfu_uuid *modem_uuid);
@@ -95,7 +98,7 @@ int nrf_modem_delta_dfu_uuid(struct nrf_modem_delta_dfu_uuid *modem_uuid);
  * @retval -NRF_ENOMEM Not enough shared memory for this request.
  * @retval -NRF_EFAULT If @c off is NULL.
  * @retval -NRF_ESHUTDOWN Modem was shut down.
- * @returns A positive error code from @ref nrf_delta_dfu_errors,
+ * @returns A positive error code from @ref nrf_modem_delta_dfu_errors,
  *	    if the modem refused the operation.
  */
 int nrf_modem_delta_dfu_offset(size_t *off);
@@ -113,7 +116,7 @@ int nrf_modem_delta_dfu_offset(size_t *off);
  * @retval -NRF_ENOMEM Not enough shared memory for this request.
  * @retval -NRF_EFAULT If @c size is NULL.
  * @retval -NRF_ESHUTDOWN Modem was shut down.
- * @returns A positive error code from @ref nrf_delta_dfu_errors,
+ * @returns A positive error code from @ref nrf_modem_delta_dfu_errors,
  *	    if the modem refused the operation.
  */
 int nrf_modem_delta_dfu_area(size_t *size);
@@ -133,7 +136,7 @@ int nrf_modem_delta_dfu_area(size_t *size);
  * @retval -NRF_EALREADY Write already initialized.
  * @retval -NRF_ENOMEM Not enough shared memory for this request.
  * @retval -NRF_ESHUTDOWN Modem was shut down.
- * @returns A positive error code from @ref nrf_delta_dfu_errors,
+ * @returns A positive error code from @ref nrf_modem_delta_dfu_errors,
  *	    if the modem refused the operation.
  */
 int nrf_modem_delta_dfu_write_init(void);
@@ -150,7 +153,7 @@ int nrf_modem_delta_dfu_write_init(void);
  * @retval -NRF_EINVAL If @c len is zero.
  * @retval -NRF_ENOMEM Not enough shared memory for this request.
  * @retval -NRF_ESHUTDOWN Modem was shut down.
- * @returns A positive error code from @ref nrf_delta_dfu_errors,
+ * @returns A positive error code from @ref nrf_modem_delta_dfu_errors,
  *	    if the modem refused the operation.
  */
 int nrf_modem_delta_dfu_write(const void *src, size_t len);
@@ -162,7 +165,7 @@ int nrf_modem_delta_dfu_write(const void *src, size_t len);
  * @retval -NRF_EPERM The Modem library is not initialized.
  * @retval -NRF_ENOMEM Not enough shared memory for this request.
  * @retval -NRF_ESHUTDOWN Modem was shut down.
- * @returns A positive error code from @ref nrf_delta_dfu_errors,
+ * @returns A positive error code from @ref nrf_modem_delta_dfu_errors,
  *	    if the modem refused the operation.
  */
 int nrf_modem_delta_dfu_write_done(void);
@@ -186,7 +189,7 @@ int nrf_modem_delta_dfu_write_done(void);
  * @retval -NRF_EPERM The Modem library is not initialized.
  * @retval -NRF_ENOMEM Not enough shared memory for this request.
  * @retval -NRF_ESHUTDOWN Modem was shut down.
- * @returns A positive error code from @ref nrf_delta_dfu_errors,
+ * @returns A positive error code from @ref nrf_modem_delta_dfu_errors,
  *	    if the modem refused the operation.
  */
 int nrf_modem_delta_dfu_erase(void);
@@ -205,7 +208,7 @@ int nrf_modem_delta_dfu_erase(void);
  * @retval -NRF_EPERM The Modem library is not initialized.
  * @retval -NRF_ENOMEM Not enough shared memory for this request.
  * @retval -NRF_ESHUTDOWN Modem was shut down.
- * @returns A positive error code from @ref nrf_delta_dfu_errors,
+ * @returns A positive error code from @ref nrf_modem_delta_dfu_errors,
  *	    if the modem refused the operation.
  */
 int nrf_modem_delta_dfu_update(void);
@@ -224,15 +227,14 @@ int nrf_modem_delta_dfu_update(void);
  * @retval -NRF_EPERM The Modem library is not initialized.
  * @retval -NRF_ENOMEM Not enough shared memory for this request.
  * @retval -NRF_ESHUTDOWN Modem was shut down.
- * @returns A positive error code from @ref nrf_delta_dfu_errors,
+ * @returns A positive error code from @ref nrf_modem_delta_dfu_errors,
  *	    if the modem refused the operation.
  */
 int nrf_modem_delta_dfu_rollback(void);
-
-/** @} */
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif /* NRF_MODEM_DELTA_DFU_H__ */
+/** @} */

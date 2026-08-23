@@ -17,10 +17,20 @@
 #define OUTSET (*(volatile uint32_t *)(GPIO_NS + 0x008))
 #define OUTCLR (*(volatile uint32_t *)(GPIO_NS + 0x00C))
 #define DIRSET (*(volatile uint32_t *)(GPIO_NS + 0x018))
+/* LED pins ต่างกันตามบอร์ด — Makefile เลือก define ตาม SOC=
+ *   nRF9160-DK: LED1-4 = P0.02-05
+ *   nRF9151-DK: LED1-4 = P0.00/01/04/05 */
+#ifdef UM_BOARD_NRF9151DK
+#define LED1 (1u << 0)
+#define LED2 (1u << 1)
+#define LED3 (1u << 4)
+#define LED4 (1u << 5)
+#else
 #define LED1 (1u << 2)
 #define LED2 (1u << 3)
 #define LED3 (1u << 4)
 #define LED4 (1u << 5)
+#endif
 
 /* ── shared memory ให้ modem: ต้องอยู่ RAM ฝั่ง NS ── */
 #define SHM_BASE 0x20010000u
@@ -48,6 +58,11 @@ static void fault_handler(struct nrf_modem_fault_info *info) {
   g_result = -1000;
 }
 
+/* v2.5.3 บังคับต้องมี dfu_handler — ไม่ใส่ = init ตอบ -EINVAL เงียบๆ
+ * (เราไม่ทำ modem DFU ใน template นี้ แค่รับ result ไว้ดูผ่าน debugger) */
+static volatile uint32_t g_dfu_result;
+static void dfu_handler(uint32_t dfu_result) { g_dfu_result = dfu_result; }
+
 
 extern void nrf_modem_os_busywait(int32_t usec);
 static void delay_ms(uint32_t ms) { nrf_modem_os_busywait((int32_t)ms * 1000); }
@@ -72,6 +87,7 @@ int main(void) {
       },
       .ipc_irq_prio = 1,
       .fault_handler = fault_handler,
+      .dfu_handler = dfu_handler,
   };
 
   g_result = nrf_modem_init(&params);
