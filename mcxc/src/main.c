@@ -11,28 +11,49 @@
 
 #define SIM_COPC     (*(volatile uint32_t *)0x40048100u)
 #define SIM_SCGC5    (*(volatile uint32_t *)0x40048038u)
-#define PORTB_PCR(n) (*(volatile uint32_t *)(0x4004A000u + 4u * (n)))
-#define GPIOB_PSOR   (*(volatile uint32_t *)0x400FF044u)
-#define GPIOB_PCOR   (*(volatile uint32_t *)0x400FF048u)
-#define GPIOB_PDDR   (*(volatile uint32_t *)0x400FF054u)
+#define PORT_PCR(port, n) (*(volatile uint32_t *)(0x40049000u + 0x1000u * (port) + 4u * (n)))
+#define GPIO_PSOR(port) (*(volatile uint32_t *)(0x400FF004u + 0x40u * (port)))
+#define GPIO_PCOR(port) (*(volatile uint32_t *)(0x400FF008u + 0x40u * (port)))
+#define GPIO_PDDR(port) (*(volatile uint32_t *)(0x400FF014u + 0x40u * (port)))
 
-#define LED_R (1u << 10)
-#define LED_G (1u << 11)
-#define LED_B (1u << 13)
+/* LED map ต่อบอร์ด (Makefile เลือก define ตาม SOC=) — active-low ทั้งคู่
+ *   FRDM-MCXC041: RGB = PTB10 (R) / PTB11 (G) / PTB13 (B)
+ *   FRDM-MCXC444: RGB = PTE31 (R) / PTE29 (G) / PTD5 (B) — วัดจากบอร์ดจริง */
+#ifdef UM_BOARD_MCXC444
+#define PORT_R 4
+#define PIN_R 31
+#define PORT_G 4
+#define PIN_G 29
+#define PORT_B 3
+#define PIN_B 5
+#define SCGC5_MASK ((1u << 12) | (1u << 13)) /* PORTD + PORTE */
+#else
+#define PORT_R 1
+#define PIN_R 10
+#define PORT_G 1
+#define PIN_G 11
+#define PORT_B 1
+#define PIN_B 13
+#define SCGC5_MASK (1u << 10) /* PORTB */
+#endif
 
 static void delay(volatile uint32_t n) { while (n--) __asm volatile(""); }
 
 int main(void) {
-  SIM_SCGC5 |= (1u << 10); /* clock PORTB */
-  PORTB_PCR(10) = 0x100;   /* MUX=1: GPIO */
-  PORTB_PCR(11) = 0x100;
-  PORTB_PCR(13) = 0x100;
-  GPIOB_PSOR = LED_R | LED_G | LED_B; /* active-low: set = ดับ */
-  GPIOB_PDDR |= LED_R | LED_G | LED_B;
+  SIM_SCGC5 |= SCGC5_MASK; /* เปิด clock พอร์ตก่อนแตะ PORTx เสมอ */
+  PORT_PCR(PORT_R, PIN_R) = 0x100; /* MUX=1: GPIO */
+  PORT_PCR(PORT_G, PIN_G) = 0x100;
+  PORT_PCR(PORT_B, PIN_B) = 0x100;
+  GPIO_PSOR(PORT_R) = 1u << PIN_R; /* active-low: set = ดับ */
+  GPIO_PSOR(PORT_G) = 1u << PIN_G;
+  GPIO_PSOR(PORT_B) = 1u << PIN_B;
+  GPIO_PDDR(PORT_R) |= 1u << PIN_R;
+  GPIO_PDDR(PORT_G) |= 1u << PIN_G;
+  GPIO_PDDR(PORT_B) |= 1u << PIN_B;
   for (;;) {
-    GPIOB_PCOR = LED_R; delay(200000); GPIOB_PSOR = LED_R;
-    GPIOB_PCOR = LED_G; delay(200000); GPIOB_PSOR = LED_G;
-    GPIOB_PCOR = LED_B; delay(200000); GPIOB_PSOR = LED_B;
+    GPIO_PCOR(PORT_R) = 1u << PIN_R; delay(200000); GPIO_PSOR(PORT_R) = 1u << PIN_R;
+    GPIO_PCOR(PORT_G) = 1u << PIN_G; delay(200000); GPIO_PSOR(PORT_G) = 1u << PIN_G;
+    GPIO_PCOR(PORT_B) = 1u << PIN_B; delay(200000); GPIO_PSOR(PORT_B) = 1u << PIN_B;
   }
 }
 

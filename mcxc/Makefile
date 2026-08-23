@@ -8,14 +8,25 @@ TARGET   = $(PROJECT)
 OUTDIR   = build
 CPU = cortex-m0plus
 
+# SoC select: mcxc041 (KL03 die, 32K/2K) หรือ mcxc444 (KL42 die, 256K/32K)
+# `unitymbed init` auto-detect จากบอร์ดแล้ว patch บรรทัดนี้เอง
+SOC ?= mcxc041
+ifeq ($(SOC),mcxc444)
+  LDSCRIPT = linker-mcxc444.ld
+  BOARD_DEF = UM_BOARD_MCXC444
+else
+  LDSCRIPT = linker.ld
+  BOARD_DEF = UM_BOARD_MCXC041
+endif
+
 SRCS   := $(wildcard src/*.c)
-CFLAGS  = -mcpu=$(CPU) -mthumb -Os -g -ffreestanding -Wall $(CFLAGS_EXTRA)
-LDFLAGS = -nostdlib -Wl,-T,linker.ld -Wl,--gc-sections -Wl,-Map=$(OUTDIR)/$(TARGET).map
+CFLAGS  = -mcpu=$(CPU) -mthumb -Os -g -ffreestanding -Wall -D$(BOARD_DEF) $(CFLAGS_EXTRA)
+LDFLAGS = -nostdlib -Wl,-T,$(LDSCRIPT) -Wl,--gc-sections -Wl,-Map=$(OUTDIR)/$(TARGET).map
 
 all: $(OUTDIR)/$(TARGET).elf $(OUTDIR)/$(TARGET).bin $(OUTDIR)/$(TARGET).hex
 	$(SIZE) $(OUTDIR)/$(TARGET).elf
 
-$(OUTDIR)/$(TARGET).elf: $(SRCS) linker.ld
+$(OUTDIR)/$(TARGET).elf: $(SRCS) $(LDSCRIPT)
 	@mkdir -p $(OUTDIR)
 	$(CC) $(CFLAGS) $(SRCS) $(LDFLAGS) -o $@
 
