@@ -1,0 +1,7 @@
+build/
+.unitymbed/credentials
+*.o
+*.elf
+*.bin
+*.hex
+*.map
