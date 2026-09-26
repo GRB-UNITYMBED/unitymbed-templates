@@ -1,0 +1,6 @@
+# Store text as LF so Makefiles, linker scripts and sources work on every OS.
+* text=auto eol=lf
+
+*.a binary
+*.o binary
+*.png binary
