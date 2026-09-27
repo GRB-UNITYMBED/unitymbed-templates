@@ -1,0 +1,9 @@
+{
+  "name": "stm32-project",
+  "mcu": "stm32",
+  "version": "0.1.0",
+  "sdk": "bare-metal",
+  "dependencies": {},
+  "build": { "optimization": "-Os", "defines": [] },
+  "openocd_cfg": "openocd.cfg"
+}
