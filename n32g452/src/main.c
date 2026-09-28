@@ -1,5 +1,5 @@
 /*
- * UnityMbed starter — N32G455 (Cortex-M4F, 512KB flash / 144KB RAM)
+ * UnityMbed starter — N32G452 (Cortex-M4F, 256KB flash / 48KB RAM)
  * Blinks an LED on PA8.
  */
 #include "n32g45x.h"

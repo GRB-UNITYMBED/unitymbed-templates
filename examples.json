@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "examples": {
+    "blink": {
+      "featured": true,
+      "icon": "icon.png",
+      "title": "Blink LED",
+      "description": "Toggle the on-board LED on PB7 every 500 ms.",
+      "mcus": ["n32g031"],
+      "verified": { "n32g031": "build" },
+      "files": { "n32g031": ["src/main.c", "README.md"] }
+    },
+    "led-sequence": {
+      "title": "LED Sequence",
+      "description": "Light the on-board LEDs on PB1, PB3, PB6 and PB7 one after another in a chasing pattern.",
+      "mcus": ["n32g031"],
+      "verified": { "n32g031": "build" },
+      "files": { "n32g031": ["src/main.c", "README.md"] }
+    },
+    "servo-smooth": {
+      "title": "Smooth Servo Sweep",
+      "description": "Sweep a hobby servo smoothly between 0, 45 and 90 degrees using a software pulse on PA1.",
+      "mcus": ["n32g031"],
+      "needsHardware": ["SG90 (or similar) servo, signal on PA1, powered from 5V"],
+      "verified": { "n32g031": "build" },
+      "files": { "n32g031": ["src/main.c", "README.md"] }
+    },
+    "pwm-3ch-20khz": {
+      "title": "3-Channel 20 kHz PWM",
+      "description": "Set the duty cycle of three 20 kHz hardware PWM outputs (PA8, PB0, PB1) from a potentiometer on PA0, with UART telemetry and a window watchdog.",
+      "mcus": ["n32g031"],
+      "needsHardware": [
+        "10k potentiometer, wiper on PA0",
+        "Optional: LEDs with resistors on PB0/PB1, oscilloscope on PA8",
+        "Optional: USB-serial adapter on PA9 (115200 baud)"
+      ],
+      "verified": { "n32g031": "build" },
+      "files": { "n32g031": ["src/main.c", "README.md"] }
+    },
+    "oled-dht11": {
+      "featured": true,
+      "icon": "icon.png",
+      "title": "OLED Temperature and Humidity",
+      "description": "Show DHT11 temperature and humidity readings on a 128x64 I2C OLED display.",
+      "mcus": ["n32g031"],
+      "needsHardware": [
+        "DHT11 sensor, data on PA5",
+        "128x64 I2C OLED (SSD1306-style), SCL on PB6, SDA on PB7"
+      ],
+      "verified": { "n32g031": "build" },
+      "files": {
+        "n32g031": [
+          "src/main.c",
+          "src/dht11.c",
+          "src/oled.c",
+          "inc/dht11.h",
+          "inc/oled.h",
+          "inc/fonts.h",
+          "README.md"
+        ]
+      }
+    },
+    "servo-potentiometer": {
+      "featured": true,
+      "icon": "icon.png",
+      "title": "Servo Control with Potentiometer",
+      "description": "Move a hobby servo on PA1 to follow a potentiometer read by the ADC on PA0, with UART telemetry.",
+      "mcus": ["n32g031"],
+      "needsHardware": [
+        "10k-100k potentiometer, wiper on PA0",
+        "SG90 (or similar) servo, signal on PA1, powered from 5V",
+        "Optional: USB-serial adapter on PA9 (115200 baud)"
+      ],
+      "verified": { "n32g031": "build" },
+      "files": { "n32g031": ["src/main.c", "README.md"] }
+    }
+  }
+}
