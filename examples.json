@@ -3,6 +3,7 @@
   "examples": {
     "blink": {
       "featured": true,
+      "icon": "icon.png",
       "title": "Blink LED",
       "description": "Toggle the on-board LED on PB7 every 500 ms.",
       "mcus": ["n32g031"],
@@ -38,6 +39,7 @@
     },
     "oled-dht11": {
       "featured": true,
+      "icon": "icon.png",
       "title": "OLED Temperature and Humidity",
       "description": "Show DHT11 temperature and humidity readings on a 128x64 I2C OLED display.",
       "mcus": ["n32g031"],
@@ -60,6 +62,7 @@
     },
     "servo-potentiometer": {
       "featured": true,
+      "icon": "icon.png",
       "title": "Servo Control with Potentiometer",
       "description": "Move a hobby servo on PA1 to follow a potentiometer read by the ADC on PA0, with UART telemetry.",
       "mcus": ["n32g031"],
