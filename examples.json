@@ -55,6 +55,18 @@
           "README.md"
         ]
       }
+    },
+    "servo-potentiometer": {
+      "title": "Servo Control with Potentiometer",
+      "description": "Move a hobby servo on PA1 to follow a potentiometer read by the ADC on PA0, with UART telemetry.",
+      "mcus": ["n32g031"],
+      "needsHardware": [
+        "10k-100k potentiometer, wiper on PA0",
+        "SG90 (or similar) servo, signal on PA1, powered from 5V",
+        "Optional: USB-serial adapter on PA9 (115200 baud)"
+      ],
+      "verified": { "n32g031": "build" },
+      "files": { "n32g031": ["src/main.c", "README.md"] }
     }
   }
 }
