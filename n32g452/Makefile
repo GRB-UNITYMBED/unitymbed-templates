@@ -6,7 +6,7 @@ CC      := arm-none-eabi-gcc
 OBJCOPY := arm-none-eabi-objcopy
 SIZE    := arm-none-eabi-size
 
-CFLAGS  := $(MCU_FLAGS) -O2 -g3 -Wall -Wextra -ffunction-sections -fdata-sections -Iinclude
+CFLAGS  := $(MCU_FLAGS) -O2 -g3 -Wall -Wextra -ffunction-sections -fdata-sections -Iinclude $(CFLAGS_EXTRA)
 LDFLAGS := $(MCU_FLAGS) -Tlinker.ld -nostartfiles -Wl,--gc-sections -Wl,-Map=build/$(PROJECT).map
 
 SRC_C := $(wildcard src/*.c) $(wildcard hal/*.c)
